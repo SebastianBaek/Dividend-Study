@@ -13,6 +13,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Objects;
+
 @RestController
 @RequestMapping("/company")
 @AllArgsConstructor
@@ -58,6 +60,6 @@ public class CompanyController {
     }
 
     public void clearFinanceCache(String companyName) {
-        this.cacheManager.getCache(CacheKey.KEY_FINANCE).evict(companyName);
+        Objects.requireNonNull(this.cacheManager.getCache(CacheKey.KEY_FINANCE)).evict(companyName);
     }
 }

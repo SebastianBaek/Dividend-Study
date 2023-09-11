@@ -1,5 +1,6 @@
 package com.example.sample.scraper;
 
+import com.example.sample.exception.impl.NoCompanyException;
 import com.example.sample.model.Company;
 import com.example.sample.model.Dividend;
 import com.example.sample.model.ScrapedResult;
@@ -49,8 +50,8 @@ public class YahooFinanceScraper implements Scraper{
 
                 String[] splits = txt.split(" ");
                 int month = Month.strToNumber(splits[0]);
-                int day = Integer.valueOf(splits[1].replace(",", ""));
-                int year = Integer.valueOf(splits[2]);
+                int day = Integer.parseInt(splits[1].replace(",", ""));
+                int year = Integer.parseInt(splits[2]);
                 String dividend = splits[3];
 
                 if (month < 0) {
@@ -62,7 +63,7 @@ public class YahooFinanceScraper implements Scraper{
             }
             scrapResult.setDividends(dividends);
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return scrapResult;
@@ -79,7 +80,7 @@ public class YahooFinanceScraper implements Scraper{
             String title = titleEle.text().split(" - ")[1].trim();
 
             return new Company(ticker, title);
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;

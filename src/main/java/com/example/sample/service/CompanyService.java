@@ -1,5 +1,6 @@
 package com.example.sample.service;
 
+import com.example.sample.exception.impl.AlreadyExistsCompanyException;
 import com.example.sample.exception.impl.NoCompanyException;
 import com.example.sample.model.Company;
 import com.example.sample.model.ScrapedResult;
@@ -32,7 +33,7 @@ public class CompanyService {
     public Company save(String ticker) {
         boolean exists = this.companyRepository.existsByTicker(ticker);
         if (exists) {
-            throw new RuntimeException("already exists ticker -> " + ticker);
+            throw new AlreadyExistsCompanyException();
         }
         return this.storeCompanyAndDividend(ticker);
     }
@@ -45,7 +46,7 @@ public class CompanyService {
 
         Company company = this.yahooFinanceScraper.scrapCompanyByTicker(ticker);
         if (ObjectUtils.isEmpty(company)) {
-            throw new RuntimeException("failed to scrap ticker -> " + ticker);
+            throw new NoCompanyException();
         }
 
         ScrapedResult scrapedResult = this.yahooFinanceScraper.scrap(company);
